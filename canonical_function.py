@@ -15,8 +15,6 @@ from rdkit.Chem import Descriptors
 from rdkit.ML.Descriptors import MoleculeDescriptors
 from rdkit.Chem import rdMolDescriptors
 from tqdm import tqdm
-from rdkit.Chem.Draw import IPythonConsole
-IPythonConsole.drawOptions.comicMode=True
 import rdkit
 print(rdkit.__version__)
 from rdkit import Chem
