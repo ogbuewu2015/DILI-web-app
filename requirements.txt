@@ -1,7 +1,7 @@
 catboost==1.2.10
 imbalanced-learn
 joblib==1.5.3
-matplotlib==3.11.0
+matplotlib==3.8.4
 Mold2_pywrapper==0.1.2
 molvs==0.1.1
 numpy
