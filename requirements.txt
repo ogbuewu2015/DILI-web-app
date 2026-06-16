@@ -12,4 +12,6 @@ seaborn==0.13.2
 streamlit==1.58.0
 tqdm==4.68.2
 xgboost==3.2.0
-adapt==0.4.2
+adapt==0.4.5
+tensorflow==2.15.*
+cvxopt
