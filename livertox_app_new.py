@@ -593,6 +593,11 @@ def plot_umap_coral(
 
     return fig
 
+X_car_umap = pd.read_csv("X_car_umap.csv")
+X_DILI_umap = pd.read_csv("X_DILI_umap.csv")
+X_DILI_align_umap = pd.read_csv("X_DILI_align_umap.csv")
+
+
 fig = plot_umap_coral(
     X_car_umap,
     X_DILI_umap,
@@ -603,9 +608,7 @@ fig = plot_umap_coral(
 st.pyplot(fig)
 
 
-X_car_umap = pd.read_csv("X_car_umap.csv")
-X_DILI_umap = pd.read_csv("X_DILI_umap.csv")
-X_DILI_align_umap = pd.read_csv("X_DILI_align_umap.csv")
+
 
 
 
