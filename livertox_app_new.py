@@ -122,17 +122,6 @@ coral = joblib.load(
     "coral_car_aligner.pkl"
 )
 
-fp_cal_clean = joblib.load(
-    "fp_cal_clean.pkl"
-)
-
-cal_nc = joblib.load(
-    "cal_nc.pkl"
-)
-
-y_cal_clean = joblib.load(
-    "y_cal_clean.pkl"
-)
 
 fp_cal_clean = joblib.load(
     "toxprint_calibration_fps.pkl"
