@@ -805,12 +805,28 @@ if one_or_few_SMILES != "['CCO']":
         # ====================================================
         # STEP 15: MODEL PROBABILITIES
         # ====================================================
+        try:
+            proba_car = calibrated_car_model.predict_proba(
+        selected_car_df_final)
+            st.success("✅ CAR probabilities generated.")
+        except Exception as e:
+            st.error(f"CAR model error: {e}")
+            st.stop()
 
-        proba_car = calibrated_car_model.predict_proba(selected_car_df_final)
+        try:
+            proba_dili = calibrated_dili_model.predict_proba(
+        selected_dili_df)
+            st.success("✅ DILI probabilities generated.")
+        except Exception as e:
+            st.error(f"DILI model error: {e}")
+            st.stop()
 
-        proba_dili = calibrated_dili_model.predict_proba(selected_dili_df)
+        
+        #proba_car = calibrated_car_model.predict_proba(selected_car_df_final)
 
-        st.success("✅ CAR and DILI probabilities generated.")
+        #proba_dili = calibrated_dili_model.predict_proba(selected_dili_df)
+
+        #st.success("✅ CAR and DILI probabilities generated.")
 
         # ====================================================
         # STEP 16: WEIGHTED SOFT VOTING
