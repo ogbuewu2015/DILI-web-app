@@ -802,6 +802,12 @@ if one_or_few_SMILES != "['CCO']":
 
         st.success("✅ CAR antagonist cytotoxic features selected.")
 
+        car_model = joblib.load("calibrated_car_model.pkl")
+
+        print(car_model.feature_names_in_)
+
+        print(cytotoxic_car)
+
         # ====================================================
         # STEP 15: MODEL PROBABILITIES
         # ====================================================
