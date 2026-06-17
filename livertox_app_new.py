@@ -365,7 +365,7 @@ def preprocess_new_data_car(raw_input_df):
 @st.cache_resource
 def load_preprocessing_objects_dili():
     selector = joblib.load("selector_dili.pkl")
-    scaler = joblib.load("scaler_mito.pkl")
+    scaler = joblib.load("scaler_dili.pkl")
     float_cols = joblib.load("float_cols_dili.pkl")
     retained_features_final = joblib.load("retained_features_final_dili.pkl")
     return selector, scaler, float_cols, retained_features_final
