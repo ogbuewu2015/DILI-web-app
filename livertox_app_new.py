@@ -91,8 +91,13 @@ def get_toxprints(smiles):
             729,
             dtype=np.uint8
         )
-    
-import numpy as np
+def compute_toxprints(smiles_list):
+
+    return [
+        get_toxprints(smi)
+        for smi in smiles_list
+    ]   
+
 
 def jaccard_similarity(fp1, fp2):
 
