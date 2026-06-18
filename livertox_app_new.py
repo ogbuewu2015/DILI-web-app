@@ -764,6 +764,12 @@ if one_or_few_SMILES != "['CCO']":
         selected_dili_df = processed_dili_df[[col for col in important_features_dili if col in processed_dili_df.columns]]
 
         st.success("✅ Important features selected.")
+        
+        #checking_step
+        
+        st.write("processed_car_df:", processed_car_df.shape)
+        st.write("important_features_car:", len(important_features_car))
+        st.write("selected_car_df:", selected_car_df.shape)
 
         # ====================================================
         # STEP 13: CORAL ALIGNMENT
