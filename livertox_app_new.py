@@ -420,27 +420,28 @@ def load_coral():
 
 coral = load_coral()
 
-cytotoxic_car = ['D001', 'D004', 'D005', 'D013', 'D014', 'D016', 'D018', 'D019', 'D025', 'D026', 'D027', 'D034', 
-                 'D035', 'D053', 'D123', 'D128', 'D130', 'D134', 'D164', 'D173', 'D176', 'D186', 'D187', 'D194', 
-                 'D195', 'D197', 'D199', 'D252', 'D259', 'D268', 'D274', 'D279', 'D282', 'D308', 'D310', 'D322', 
-                 'D323', 'D325', 'D326', 'D327', 'D335', 'D336', 'D337', 'D338', 'D339', 'D360', 'D366', 'D367', 
-                 'D368', 'D369', 'D370', 'D371', 'D372', 'D373', 'D374', 'D375', 'D376', 'D377', 'D378', 'D380', 
-                 'D381', 'D383', 'D384', 'D385', 'D393', 'D395', 'D396', 'D411', 'D413', 'D447', 'D450', 'D451', 
-                 'D452', 'D453', 'D454', 'D459', 'D460', 'D461', 'D462', 'D468', 'D469', 'D470', 'D475', 'D476', 
-                 'D477', 'D478', 'D480', 'D483', 'D484', 'D485', 'D486', 'D492', 'D493', 'D494', 'D499', 'D500', 
-                 'D501', 'D502', 'D503', 'D504', 'D505', 'D506', 'D507', 'D508', 'D509', 'D510', 'D532', 'D533', 
-                 'D534', 'D535', 'D536', 'D537', 'D538', 'D539', 'D544', 'D545', 'D546', 'D547', 'D550', 'D551', 
-                 'D556', 'D559', 'D560', 'D561', 'D562', 'D570', 'D574', 'D575', 'D576', 'D578', 'D579', 'D582', 
-                 'D588', 'D589', 'D590', 'D591', 'D596', 'D597', 'D598', 'D599', 'D600', 'D601', 'D602', 'D604', 
-                 'D605', 'D606', 'D607', 'D621', 'D648', 'D649', 'D650', 'D651', 'D652', 'D668', 'D674', 'D675', 
-                 'D677', 'D679', 'D680', 'D689', 'D708', 'D712', 'D714', 'D715', 'D716', 'D717', 'D718', 'D719', 
-                 'D721', 'D724', 'D729', 'D730', 'D731', 'D732', 'D733', 'D738', 'D739', 'D744', 'D745', 'D746', 
-                 'D748', 'D749', 'D754', 'D756', 'D763', 'D765', 'D768', 'D774', 'D777', 'AD013', 'AD034', 'AD053', 
-                 'AD123', 'AD308', 'AD330', 'AD360', 'AD366', 'AD367', 'AD368', 'AD372', 'AD373', 'AD375', 'AD377', 
-                 'AD379', 'AD380', 'AD381', 'AD382', 'AD385', 'AD389', 'AD392', 'AD396', 'AD397', 'AD483', 'AD533', 
-                 'AD534', 'AD535', 'AD536', 'AD537', 'AD538', 'AD539', 'AD541', 'AD542', 'AD544', 'AD556', 'AD570', 
-                 'AD573', 'AD574', 'AD575', 'AD605', 
-                 'AD648', 'AD668', 'AD679', 'AD689', 'AD712', 'AD713', 'AD715', 'AD746', 'AD768', 'AD774', 'AD775']
+cytotoxic_car = ['AD013', 'AD034', 'AD053', 'AD123', 'AD308', 'AD330', 'AD360', 'AD366', 'AD367', 
+                 'AD368', 'AD372', 'AD373', 'AD375', 'AD377', 'AD379', 'AD380', 'AD381', 'AD382', 
+                 'AD385', 'AD389', 'AD392', 'AD396', 'AD397', 'AD483', 'AD533', 'AD534', 'AD535', 
+                 'AD536', 'AD537', 'AD538', 'AD539', 'AD541', 'AD542', 'AD544', 'AD556', 'AD570', 
+                 'AD573', 'AD574', 'AD575', 'AD605', 'AD648', 'AD668', 'AD679', 'AD689', 'AD712', 
+                 'AD713', 'AD715', 'AD746', 'AD768', 'AD774', 'AD775', 'D001', 'D004', 'D005', 'D013', 
+                 'D014', 'D016', 'D018', 'D019', 'D025', 'D026', 'D035', 'D123', 'D128', 'D130', 'D134', 
+                 'D164', 'D173', 'D176', 'D186', 'D187', 'D194', 'D195', 'D197', 'D199', 'D252', 'D259', 
+                 'D268', 'D274', 'D279', 'D282', 'D308', 'D310', 'D322', 'D323', 'D325', 'D326', 'D327', 
+                 'D335', 'D336', 'D337', 'D338', 'D339', 'D360', 'D366', 'D367', 'D368', 'D369', 'D370', 
+                 'D371', 'D372', 'D373', 'D374', 'D375', 'D377', 'D378', 'D380', 'D381', 'D384', 'D385', 
+                 'D393', 'D395', 'D396', 'D413', 'D447', 'D450', 'D451', 'D452', 'D453', 'D454', 'D459', 
+                 'D460', 'D461', 'D462', 'D468', 'D469', 'D470', 'D475', 'D476', 'D477', 'D478', 'D480', 
+                 'D483', 'D484', 'D485', 'D486', 'D492', 'D493', 'D494', 'D499', 'D500', 'D501', 'D502', 
+                 'D503', 'D504', 'D505', 'D506', 'D507', 'D508', 'D509', 'D510', 'D532', 'D533', 'D534', 
+                 'D535', 'D536', 'D537', 'D538', 'D539', 'D544', 'D545', 'D546', 'D547', 'D550', 'D551', 
+                 'D556', 'D559', 'D560', 'D561', 'D562', 'D570', 'D574', 'D575', 'D576', 'D578', 'D579', 
+                 'D582', 'D588', 'D589', 'D590', 'D591', 'D596', 'D597', 'D598', 'D599', 'D600', 'D601', 
+                 'D602', 'D604', 'D605', 'D606', 'D607', 'D621', 'D648', 'D649', 'D650', 'D651', 'D652', 
+                 'D668', 'D674', 'D675', 'D677', 'D679', 'D680', 'D689', 'D708', 'D712', 'D714', 'D715', 
+                 'D716', 'D717', 'D718', 'D719', 'D721', 'D724', 'D729', 'D730', 'D731', 'D732', 'D733', 'D738', 'D739', 'D744', 'D745', 
+                 'D746', 'D748', 'D749', 'D754', 'D756', 'D763', 'D765', 'D768', 'D774', 'D777']
 
 important_features_dili = ['D001', 'D004', 'D005', 'D013', 'D014', 'D016', 'D018', 'D019', 'D025', 'D026', 'D027', 'D034', 'D035', 'D123', 
                            'D128', 'D130', 'D164', 'D173', 'D176', 'D186', 'D194', 'D195', 'D197', 'D199', 'D237', 'D259', 'D268', 'D274', 
@@ -765,11 +766,7 @@ if one_or_few_SMILES != "['CCO']":
 
         st.success("✅ Important features selected.")
         
-        #checking_step
-        
-        st.write("processed_car_df:", processed_car_df.shape)
-        st.write("important_features_car:", len(important_features_car))
-        st.write("selected_car_df:", selected_car_df.shape)
+       
 
         # ====================================================
         # STEP 13: CORAL ALIGNMENT
@@ -808,49 +805,19 @@ if one_or_few_SMILES != "['CCO']":
 
         st.success("✅ CAR antagonist cytotoxic features selected.")
 
-        model_features = list(calibrated_car_model.feature_names_in_)
-        prediction_features = list(selected_car_df_final.columns)
-
-        st.write("Model feature count:", len(model_features))
-        st.write("Prediction feature count:", len(prediction_features))
-
-        st.write(
-        "Features only in prediction:",
-        sorted(set(prediction_features) - set(model_features)))
-
-        st.write(
-        "Features only in model:",
-        sorted(set(model_features) - set(prediction_features)))
-
-        print(calibrated_car_model.feature_names_in_)
-
-        print(cytotoxic_car)
+        
 
         # ====================================================
         # STEP 15: MODEL PROBABILITIES
         # ====================================================
-        try:
-            proba_car = calibrated_car_model.predict_proba(
-        selected_car_df_final)
-            st.success("✅ CAR probabilities generated.")
-        except Exception as e:
-            st.error(f"CAR model error: {e}")
-            st.stop()
-
-        try:
-            proba_dili = calibrated_dili_model.predict_proba(
-        selected_dili_df)
-            st.success("✅ DILI probabilities generated.")
-        except Exception as e:
-            st.error(f"DILI model error: {e}")
-            st.stop()
+        
 
         
-        #proba_car = calibrated_car_model.predict_proba(selected_car_df_final)
+        proba_car = calibrated_car_model.predict_proba(selected_car_df_final)
 
-        #proba_dili = calibrated_dili_model.predict_proba(selected_dili_df)
+        proba_dili = calibrated_dili_model.predict_proba(selected_dili_df)
 
-        #st.success("✅ CAR and DILI probabilities generated.")
+        st.success("✅ CAR and DILI probabilities generated.")
 
         # ====================================================
         # STEP 16: WEIGHTED SOFT VOTING
