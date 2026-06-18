@@ -802,7 +802,19 @@ if one_or_few_SMILES != "['CCO']":
 
         st.success("✅ CAR antagonist cytotoxic features selected.")
 
-        
+        model_features = list(calibrated_car_model.feature_names_in_)
+        prediction_features = list(selected_car_df_final.columns)
+
+        st.write("Model feature count:", len(model_features))
+        st.write("Prediction feature count:", len(prediction_features))
+
+        st.write(
+        "Features only in prediction:",
+        sorted(set(prediction_features) - set(model_features)))
+
+        st.write(
+        "Features only in model:",
+        sorted(set(model_features) - set(prediction_features)))
 
         print(calibrated_car_model.feature_names_in_)
 
