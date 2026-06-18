@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import molvs
 # Imbalanced-learn classifiers and ensembles
 from imblearn.ensemble import EasyEnsembleClassifier, BalancedBaggingClassifier
-
+import base64
 # XGBoost classifier
 from xgboost import XGBClassifier
 
