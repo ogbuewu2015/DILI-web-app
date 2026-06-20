@@ -127,188 +127,7 @@ def compute_toxprints(smiles_list):
 
 
 
-# def get_toxprints(smiles):
 
-#     mol = Chem.MolFromSmiles(smiles)
-
-#     if mol is None:
-#         return np.zeros(729, dtype=np.uint8)
-
-#     try:
-
-#         df = ctx.search_toxprints(
-#             chemical=smiles
-#         )
-
-#         if isinstance(df, pd.DataFrame):
-
-#             return (
-#                 df.iloc[0]
-#                 .values
-#                 .astype(np.uint8)
-#             )
-
-#         return (
-#             np.array(df)
-#             .flatten()
-#             .astype(np.uint8)
-#         )
-
-#     except Exception:
-
-#         return np.zeros(
-#             729,
-#             dtype=np.uint8
-#         )
-# def compute_toxprints(smiles_list):
-
-#     return [
-#         get_toxprints(smi)
-#         for smi in smiles_list
-#     ]   
-
-
-
-# import numpy as np
-# import pandas as pd
-# import streamlit as st
-# from rdkit import Chem
-
-
-# def get_toxprints(smiles):
-
-#     st.write("--------------------------------------------------")
-#     st.write(f"Generating ToxPrints for: {smiles}")
-
-#     mol = Chem.MolFromSmiles(smiles)
-
-#     if mol is None:
-
-#         st.error("Invalid SMILES")
-
-#         return np.zeros(
-#             729,
-#             dtype=np.uint8
-#         )
-
-#     try:
-
-#         result = ctx.search_toxprints(
-#             chemical=smiles
-#         )
-
-#         st.write("CTX return type:")
-#         st.write(type(result))
-
-#         st.write("CTX raw result:")
-#         st.write(result)
-
-#         # ==========================================
-#         # DataFrame case
-#         # ==========================================
-
-#         if isinstance(result, pd.DataFrame):
-
-#             st.write(
-#                 "CTX returned DataFrame with shape:",
-#                 result.shape
-#             )
-
-#             fp = (
-#                 result.iloc[0]
-#                 .values
-#                 .astype(np.uint8)
-#             )
-
-#             st.write(
-#                 "Bits ON:",
-#                 int(np.sum(fp))
-#             )
-
-#             st.write(
-#                 "Fingerprint length:",
-#                 len(fp)
-#             )
-
-#             return fp
-
-#         # ==========================================
-#         # Array/list case
-#         # ==========================================
-
-#         fp = (
-#             np.array(result)
-#             .flatten()
-#             .astype(np.uint8)
-#         )
-
-#         st.write(
-#             "Converted array shape:",
-#             fp.shape
-#         )
-
-#         st.write(
-#             "Bits ON:",
-#             int(np.sum(fp))
-#         )
-
-#         st.write(
-#             "Fingerprint length:",
-#             len(fp)
-#         )
-
-#         return fp
-
-#     except Exception as e:
-
-#         st.error(
-#             f"ToxPrint generation failed for {smiles}"
-#         )
-
-#         st.write(
-#             "Exception type:"
-#         )
-
-#         st.write(
-#             type(e)
-#         )
-
-#         st.write(
-#             "Exception message:"
-#         )
-
-#         st.write(
-#             str(e)
-#         )
-
-#         import traceback
-
-#         st.code(
-#             traceback.format_exc()
-#         )
-
-#         return np.zeros(
-#             729,
-#             dtype=np.uint8
-#         )
-
-
-# def compute_toxprints(smiles_list):
-
-#     fps = []
-
-#     for smi in smiles_list:
-
-#         fp = get_toxprints(smi)
-
-#         st.write(
-#             f"Final fingerprint ON bits for {smi}:",
-#             int(np.sum(fp))
-#         )
-
-#         fps.append(fp)
-
-#     return fps
 
 def jaccard_similarity(fp1, fp2):
 
@@ -1050,11 +869,6 @@ if one_or_few_SMILES != "['CCO']":
             axis=1
         )
 
-        ensemble_confidence = np.max(
-            ensemble_proba,
-            axis=1
-        )
-
         st.success("✅ Ensemble prediction complete.")
 
         # ====================================================
@@ -1072,20 +886,6 @@ if one_or_few_SMILES != "['CCO']":
         k1 = max(1, int(np.sqrt(len(idx1))))
 
         test_fps = compute_toxprints(df["smiles"])
-
-        st.write("Number of test fingerprints:", len(test_fps))
-
-        if len(test_fps) > 0:
-            st.write("Bits ON in first test fingerprint:", int(np.sum(test_fps[0])))
-
-            st.write("Fingerprint length:", len(test_fps[0]))
-
-            st.write("First 20 bits:", test_fps[0][:20])
-
-        st.write("Calibration fingerprints:", len(fp_cal_clean))
-
-        st.write("Bits ON in first calibration fingerprint:", int(np.sum(fp_cal_clean[0])))
-        st.write("Calibration fingerprint length:", len(fp_cal_clean[0]))
 
         p0_list = []
 
@@ -1190,8 +990,6 @@ if one_or_few_SMILES != "['CCO']":
 
             "Ensemble_Probability": ensemble_proba[:, 1],
 
-            "Confidence_Score": ensemble_confidence,
-
             "Prediction": np.where(
                 ensemble_prediction == 1,
                 "DILI Positive",
@@ -1241,8 +1039,6 @@ if one_or_few_SMILES != "['CCO']":
             st.write(f"Prediction: {results_df.iloc[0]['Prediction']}")
 
             st.write(f"Ensemble Probability: {results_df.iloc[0]['Ensemble_Probability']:.3f}")
-
-            st.write(f"Confidence Score: {results_df.iloc[0]['Confidence_Score']:.3f}")
 
             st.write(f"P-value Inactive: {results_df.iloc[0]['p_value_0']:.3f}")
 
