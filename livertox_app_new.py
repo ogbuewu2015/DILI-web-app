@@ -58,6 +58,12 @@ from rdkit import Chem
 import numpy as np
 import pandas as pd
 
+import ctxpy as ctx
+
+ctx = ctx.Chemical(x_api_key='648a3d70')
+ctx = ctx.Chemical(x_api_key='dd462a42-d747-464c-831d-d1c1dc8f14a4')
+
+
 def get_toxprints(smiles):
 
     mol = Chem.MolFromSmiles(smiles)
@@ -154,6 +160,7 @@ calibrated_car_model = joblib.load(
 calibrated_dili_model = joblib.load(
     "calibrated_dili_eec_xgb_model.pkl"
 )
+
 
 
 
@@ -860,6 +867,20 @@ if one_or_few_SMILES != "['CCO']":
         k1 = max(1, int(np.sqrt(len(idx1))))
 
         test_fps = compute_toxprints(df["smiles"])
+
+        st.write("Number of test fingerprints:", len(test_fps))
+
+        if len(test_fps) > 0:
+            st.write("Bits ON in first test fingerprint:", int(np.sum(test_fps[0])))
+
+            st.write("Fingerprint length:", len(test_fps[0]))
+
+            st.write("First 20 bits:", test_fps[0][:20])
+
+        st.write("Calibration fingerprints:", len(fp_cal_clean))
+
+        st.write("Bits ON in first calibration fingerprint:", int(np.sum(fp_cal_clean[0])))
+        st.write("Calibration fingerprint length:", len(fp_cal_clean[0]))
 
         p0_list = []
 
