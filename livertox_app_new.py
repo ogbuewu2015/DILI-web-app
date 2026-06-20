@@ -61,7 +61,7 @@ import pandas as pd
 import ctxpy as ctx
 
 ctx = ctx.Chemical(x_api_key='648a3d70')
-ctx = ctx.Chemical(x_api_key='dd462a42-d747-464c-831d-d1c1dc8f14a4')
+#ctx = ctx.Chemical(x_api_key='dd462a42-d747-464c-831d-d1c1dc8f14a4')
 
 
 def get_toxprints(smiles):
