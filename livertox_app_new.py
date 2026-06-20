@@ -60,8 +60,71 @@ import pandas as pd
 
 import ctxpy as ctx
 
-ctx = ctx.Chemical(x_api_key='648a3d70')
-#ctx = ctx.Chemical(x_api_key='dd462a42-d747-464c-831d-d1c1dc8f14a4')
+
+
+
+# initialize once (IMPORTANT)
+chem_client = ctx.Chemical(x_api_key="648a3d70")
+
+
+#chem_client= ctx.Chemical(x_api_key='dd462a42-d747-464c-831d-d1c1dc8f14a4')
+
+
+def get_toxprints(smiles):
+
+    # safety check
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is None:
+        return np.zeros(729, dtype=np.uint8)
+
+    try:
+        result = ctx.search_toxprints(chemical=smiles)
+
+        # DEBUG (remove later)
+        print(f"ToxPrint returned type: {type(result)} for {smiles}")
+
+        # CASE 1: DataFrame (your actual case)
+        if isinstance(result, pd.DataFrame):
+
+            fp = result.iloc[0].values.astype(np.uint8)
+
+            # DEBUG
+            print(f"ON bits: {np.sum(fp)}")
+
+            return fp
+
+        # CASE 2: numpy / list fallback
+        fp = np.array(result).flatten().astype(np.uint8)
+
+        print(f"ON bits (fallback): {np.sum(fp)}")
+
+        return fp
+
+    except Exception as e:
+
+        print(f"❌ ToxPrint failed for {smiles}: {e}")
+
+        return np.zeros(729, dtype=np.uint8)
+
+
+def compute_toxprints(smiles_list):
+
+    fps = []
+
+    for i, smi in enumerate(smiles_list):
+
+        print(f"Generating ToxPrints for [{i+1}/{len(smiles_list)}]: {smi}")
+
+        fp = get_toxprints(smi)
+
+        print(f"Final ON bits: {np.sum(fp)}")
+
+        fps.append(fp)
+
+    return fps
+
+
+
 
 
 # def get_toxprints(smiles):
@@ -106,146 +169,146 @@ ctx = ctx.Chemical(x_api_key='648a3d70')
 
 
 
-import numpy as np
-import pandas as pd
-import streamlit as st
-from rdkit import Chem
+# import numpy as np
+# import pandas as pd
+# import streamlit as st
+# from rdkit import Chem
 
 
-def get_toxprints(smiles):
+# def get_toxprints(smiles):
 
-    st.write("--------------------------------------------------")
-    st.write(f"Generating ToxPrints for: {smiles}")
+#     st.write("--------------------------------------------------")
+#     st.write(f"Generating ToxPrints for: {smiles}")
 
-    mol = Chem.MolFromSmiles(smiles)
+#     mol = Chem.MolFromSmiles(smiles)
 
-    if mol is None:
+#     if mol is None:
 
-        st.error("Invalid SMILES")
+#         st.error("Invalid SMILES")
 
-        return np.zeros(
-            729,
-            dtype=np.uint8
-        )
+#         return np.zeros(
+#             729,
+#             dtype=np.uint8
+#         )
 
-    try:
+#     try:
 
-        result = ctx.search_toxprints(
-            chemical=smiles
-        )
+#         result = ctx.search_toxprints(
+#             chemical=smiles
+#         )
 
-        st.write("CTX return type:")
-        st.write(type(result))
+#         st.write("CTX return type:")
+#         st.write(type(result))
 
-        st.write("CTX raw result:")
-        st.write(result)
+#         st.write("CTX raw result:")
+#         st.write(result)
 
-        # ==========================================
-        # DataFrame case
-        # ==========================================
+#         # ==========================================
+#         # DataFrame case
+#         # ==========================================
 
-        if isinstance(result, pd.DataFrame):
+#         if isinstance(result, pd.DataFrame):
 
-            st.write(
-                "CTX returned DataFrame with shape:",
-                result.shape
-            )
+#             st.write(
+#                 "CTX returned DataFrame with shape:",
+#                 result.shape
+#             )
 
-            fp = (
-                result.iloc[0]
-                .values
-                .astype(np.uint8)
-            )
+#             fp = (
+#                 result.iloc[0]
+#                 .values
+#                 .astype(np.uint8)
+#             )
 
-            st.write(
-                "Bits ON:",
-                int(np.sum(fp))
-            )
+#             st.write(
+#                 "Bits ON:",
+#                 int(np.sum(fp))
+#             )
 
-            st.write(
-                "Fingerprint length:",
-                len(fp)
-            )
+#             st.write(
+#                 "Fingerprint length:",
+#                 len(fp)
+#             )
 
-            return fp
+#             return fp
 
-        # ==========================================
-        # Array/list case
-        # ==========================================
+#         # ==========================================
+#         # Array/list case
+#         # ==========================================
 
-        fp = (
-            np.array(result)
-            .flatten()
-            .astype(np.uint8)
-        )
+#         fp = (
+#             np.array(result)
+#             .flatten()
+#             .astype(np.uint8)
+#         )
 
-        st.write(
-            "Converted array shape:",
-            fp.shape
-        )
+#         st.write(
+#             "Converted array shape:",
+#             fp.shape
+#         )
 
-        st.write(
-            "Bits ON:",
-            int(np.sum(fp))
-        )
+#         st.write(
+#             "Bits ON:",
+#             int(np.sum(fp))
+#         )
 
-        st.write(
-            "Fingerprint length:",
-            len(fp)
-        )
+#         st.write(
+#             "Fingerprint length:",
+#             len(fp)
+#         )
 
-        return fp
+#         return fp
 
-    except Exception as e:
+#     except Exception as e:
 
-        st.error(
-            f"ToxPrint generation failed for {smiles}"
-        )
+#         st.error(
+#             f"ToxPrint generation failed for {smiles}"
+#         )
 
-        st.write(
-            "Exception type:"
-        )
+#         st.write(
+#             "Exception type:"
+#         )
 
-        st.write(
-            type(e)
-        )
+#         st.write(
+#             type(e)
+#         )
 
-        st.write(
-            "Exception message:"
-        )
+#         st.write(
+#             "Exception message:"
+#         )
 
-        st.write(
-            str(e)
-        )
+#         st.write(
+#             str(e)
+#         )
 
-        import traceback
+#         import traceback
 
-        st.code(
-            traceback.format_exc()
-        )
+#         st.code(
+#             traceback.format_exc()
+#         )
 
-        return np.zeros(
-            729,
-            dtype=np.uint8
-        )
+#         return np.zeros(
+#             729,
+#             dtype=np.uint8
+#         )
 
 
-def compute_toxprints(smiles_list):
+# def compute_toxprints(smiles_list):
 
-    fps = []
+#     fps = []
 
-    for smi in smiles_list:
+#     for smi in smiles_list:
 
-        fp = get_toxprints(smi)
+#         fp = get_toxprints(smi)
 
-        st.write(
-            f"Final fingerprint ON bits for {smi}:",
-            int(np.sum(fp))
-        )
+#         st.write(
+#             f"Final fingerprint ON bits for {smi}:",
+#             int(np.sum(fp))
+#         )
 
-        fps.append(fp)
+#         fps.append(fp)
 
-    return fps
+#     return fps
 
 def jaccard_similarity(fp1, fp2):
 
