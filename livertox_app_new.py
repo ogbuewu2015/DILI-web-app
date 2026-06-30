@@ -549,10 +549,11 @@ st.markdown(
     """
     <div style="background-color:#E8EAF6; padding: 15px; border-radius: 10px;">
         <p style="color:#1A237E; font-size: 16px;">
-            Hepatotoxicity, or drug-induced liver injury, is a major reason for drug withdrawals and clinical trial failures. 
-            Predicting liver toxicity early is critical for ensuring patient safety and improving drug development success. 
+            Hepatotoxicity, or drug-induced liver injury (DILI) , is a major reason for drug withdrawals and clinical trial failures. 
+            Predicting intrinsic liver toxicity early is critical for ensuring patient safety and improving drug development success. 
             Our tool helps identify potential hepatotoxic risks of drug candidates using advanced machine learning. 
-            See the chemical space visualization of the training compounds below.
+            See below the chemical space visualization of the DILI training compounds in a domain adapted Constitutive Androstane Receptor antagonist
+            cytotoxicity signal.
         </p>
     </div>
     """,
