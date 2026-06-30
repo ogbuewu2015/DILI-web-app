@@ -1352,26 +1352,28 @@ else:
         "ℹ️ Please input or upload SMILES data and click on 'Predict Drug Induced Hepatotoxicity'."
     )
 
-    st.markdown(
-        """
-        <div style="border: 2px solid #4A148C; border-radius: 15px; padding: 20px; text-align: center; background-color: #f4f1fa;">
-
-            <h5 style="color: #2d0a61;">
-                This predictive framework consists of two models: an auxiliary branch (integrated CAR antagonist cytotoxicity signal)
+    st.markdown("""
+    <div style="border: 2px solid #4A148C; border-radius: 15px; padding: 20px; text-align: center; background-color: #f4f1fa;">
+        <h5 style="color: #2d0a61;">
+            This predictive framework consists of two models: an auxiliary branch (integrated CAR antagonist cytotoxicity signal)
                 and a primary branch (DILI). The ensemble models were built on DILIrank data (634 training and 97 in-domain calibration compounds,
                 all verified from literature). The CAR antagonist cytotoxicity signal model is independently aligned with the DILIrank dataset
                 using Correlation Alignment to support hepatotoxicity prediction.
-            </h5>
-
-            <h5 style="color: white; background-color: #6A1B9A; border-radius: 10px; padding: 15px; margin-top: 20px; opacity: 0.9;">
-                DILIrank hepatotoxicity predictions are more reliable when Mondrian conformal prediction indicates confidence which is probabilistic and causal in chemical space.
+        </h5>
+        <h5 style="color: white; background-color: #6A1B9A; border-radius: 10px; padding: 15px; margin-top: 20px; opacity: 0.9;">
+            DILIrank hepatotoxicity predictions are more reliable when Mondrian conformal prediction indicates confidence which is probabilistic and causal in chemical space.
                 however confidence is not certainty.
-            </h5>
+        </h5>
+    </div>
+    """, unsafe_allow_html=True)
 
-        </div>
-        """,
-        unsafe_allow_html=True
-    )   
+
+    
+    
+
+
+    
+    
     
     
     
