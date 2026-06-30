@@ -203,15 +203,32 @@ heavy_metals_atomic_nums = [
 
 # === Preprocessing Functions ===
 
+# def remove_heavy_metals(df):
+#     def has_no_heavy_metals(smiles):
+#         mol = Chem.MolFromSmiles(smiles)
+#         if mol is None:
+#             return False
+#         return not any(atom.GetAtomicNum() in heavy_metals_atomic_nums for atom in mol.GetAtoms())
+#     return df[df['smiles'].apply(has_no_heavy_metals)]
+
 def remove_heavy_metals(df):
-    def has_no_heavy_metals(smiles):
+
+    def classify(smiles):
         mol = Chem.MolFromSmiles(smiles)
+
         if mol is None:
-            return False
-        return not any(atom.GetAtomicNum() in heavy_metals_atomic_nums for atom in mol.GetAtoms())
-    return df[df['smiles'].apply(has_no_heavy_metals)]
+            return "invalid_smiles"
 
+        for atom in mol.GetAtoms():
+            if atom.GetAtomicNum() in heavy_metals_atomic_nums:
+                return "heavy_metal"
 
+        return "ok"
+
+    df = df.copy()
+    df["qc_flag"] = df["smiles"].apply(classify)
+
+    return df
 
 metal_disconnector = MolVSStandardizer().disconnect_metals
 
@@ -657,13 +674,34 @@ if one_or_few_SMILES != "['CCO']":
         # STEP 1: REMOVE HEAVY METALS
         # ====================================================
 
+
+
         df = remove_heavy_metals(df)
 
-        if df.empty:
-            st.error("❌ All input SMILES contain heavy metals.")
-            st.stop()
+        clean = df[df["qc_flag"] == "ok"]
+        invalid = df[df["qc_flag"] == "invalid_smiles"]
+        metals = df[df["qc_flag"] == "heavy_metal"]
 
-        st.success("✅ Heavy metals filtered.")
+        if len(clean) == 0:
+            if len(invalid) > 0:
+                st.error("❌ Invalid SMILES format detected.")
+            elif len(metals) > 0:
+                st.error("❌ Heavy metal-containing molecules detected.")
+            else:
+                st.error("❌ No valid molecules after preprocessing.")
+
+                st.stop()
+
+            st.success("✅ Heavy metal filtering completed.")
+
+        
+        # df = remove_heavy_metals(df)
+
+        # if df.empty:
+        #     st.error("❌ All input SMILES contain heavy metals.")
+        #     st.stop()
+
+        # st.success("✅ Heavy metals filtered.")
 
         # ====================================================
         # STEP 2: DISCONNECT METALS
@@ -1088,12 +1126,33 @@ elif predict_button:
             # ====================================================
             # STEP 1: REMOVE HEAVY METALS
             # ====================================================
+            
+
+
+
+
 
             df2 = remove_heavy_metals(df2)
-            if df2.empty:
-                st.error("❌ All uploaded SMILES contain heavy metals.")
-                st.stop()
-            st.success("✅ Heavy metals filtered.")
+
+            clean = df[df2["qc_flag"] == "ok"]
+            invalid = df2[df2["qc_flag"] == "invalid_smiles"]
+            metals = df2[df2["qc_flag"] == "heavy_metal"]
+
+            if len(clean) == 0:
+                if len(invalid) > 0:
+                    st.error("❌ Invalid SMILES format detected.")
+                elif len(metals) > 0:
+                    st.error("❌ Heavy metal-containing molecules detected.")
+                else:
+                    st.error("❌ No valid molecules after preprocessing.")
+                    st.stop()
+                st.success("✅ Heavy metal filtering completed.")
+            
+            # df2 = remove_heavy_metals(df2)
+            # if df2.empty:
+            #     st.error("❌ All uploaded SMILES contain heavy metals.")
+            #     st.stop()
+            # st.success("✅ Heavy metals filtered.")
 
             # ====================================================
             # STEP 2: DISCONNECT METALS
