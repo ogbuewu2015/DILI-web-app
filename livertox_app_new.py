@@ -566,12 +566,12 @@ st.markdown(
 )
 
 
-
-
 def plot_umap_coral(
-    car_umap,
-    dili_umap,
-    dili_align_umap,
+    target_umap,
+    source_umap,
+    aligned_umap,
+    target_label="Target",
+    source_label="Source",
     title="UMAP Visualization of CORAL"
 ):
     """
@@ -581,22 +581,22 @@ def plot_umap_coral(
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-    # Before CORAL
+    # ---------------- Before CORAL ----------------
     axes[0].scatter(
-        car_umap["UMAP_1"],
-        car_umap["UMAP_2"],
+        target_umap["UMAP_1"],
+        target_umap["UMAP_2"],
         c="blue",
         marker="x",
-        label="Target (CAR Antagonist)",
+        label=target_label,
         alpha=0.8
     )
 
     axes[0].scatter(
-        dili_umap["UMAP_1"],
-        dili_umap["UMAP_2"],
+        source_umap["UMAP_1"],
+        source_umap["UMAP_2"],
         c="red",
         marker="o",
-        label="Source (DILI)",
+        label=source_label,
         alpha=0.6
     )
 
@@ -605,22 +605,22 @@ def plot_umap_coral(
     axes[0].set_ylabel("UMAP 2")
     axes[0].legend()
 
-    # After CORAL
+    # ---------------- After CORAL ----------------
     axes[1].scatter(
-        car_umap["UMAP_1"],
-        car_umap["UMAP_2"],
+        target_umap["UMAP_1"],
+        target_umap["UMAP_2"],
         c="blue",
         marker="x",
-        label="Target (CAR Antagonist)",
+        label=target_label,
         alpha=0.8
     )
 
     axes[1].scatter(
-        dili_align_umap["UMAP_1"],
-        dili_align_umap["UMAP_2"],
+        aligned_umap["UMAP_1"],
+        aligned_umap["UMAP_2"],
         c="red",
         marker="o",
-        label="Source (DILI)",
+        label=source_label,
         alpha=0.6
     )
 
@@ -630,39 +630,127 @@ def plot_umap_coral(
     axes[1].legend()
 
     fig.suptitle(title, fontsize=14, fontweight="bold")
-
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
     return fig
-
-X_car_umap = pd.read_csv("X_car_umap.csv")
-X_DILI_umap = pd.read_csv("X_DILI_umap.csv")
-X_DILI_align_umap = pd.read_csv("X_DILI_align_umap.csv")
-
-
-X_mito_umap = pd.read_csv("X_mito_umap.csv")
-X_DILI_umap_mito = pd.read_csv("X_DILI_umap_mito.csv")
-X_DILI_align_umap_mito = pd.read_csv("X_DILI_align_umap_mito.csv")
-
 
 fig = plot_umap_coral(
     X_car_umap,
     X_DILI_umap,
     X_DILI_align_umap,
+    target_label="Target (CAR Antagonist)",
+    source_label="Source (DILI)",
     title="CORrelation ALignment (CORAL) between CAR Antagonist & DILI Training Dataset"
 )
 
 st.pyplot(fig)
 
-
 fig = plot_umap_coral(
     X_mito_umap,
     X_DILI_umap_mito,
     X_DILI_align_umap_mito,
+    target_label="Target (MITOTOX)",
+    source_label="Source (DILI)",
     title="CORrelation ALignment (CORAL) between MITOTOX & DILI Training Dataset"
 )
 
 st.pyplot(fig)
+
+# def plot_umap_coral(
+#     car_umap,
+#     dili_umap,
+#     dili_align_umap,
+#     title="UMAP Visualization of CORAL"
+# ):
+#     """
+#     Plot UMAP before and after CORAL alignment.
+#     Returns matplotlib figure.
+#     """
+
+#     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+#     # Before CORAL
+#     axes[0].scatter(
+#         car_umap["UMAP_1"],
+#         car_umap["UMAP_2"],
+#         c="blue",
+#         marker="x",
+#         label="Target (CAR Antagonist)",
+#         alpha=0.8
+#     )
+
+#     axes[0].scatter(
+#         dili_umap["UMAP_1"],
+#         dili_umap["UMAP_2"],
+#         c="red",
+#         marker="o",
+#         label="Source (DILI)",
+#         alpha=0.6
+#     )
+
+#     axes[0].set_title("Before CORAL")
+#     axes[0].set_xlabel("UMAP 1")
+#     axes[0].set_ylabel("UMAP 2")
+#     axes[0].legend()
+
+#     # After CORAL
+#     axes[1].scatter(
+#         car_umap["UMAP_1"],
+#         car_umap["UMAP_2"],
+#         c="blue",
+#         marker="x",
+#         label="Target (CAR Antagonist)",
+#         alpha=0.8
+#     )
+
+#     axes[1].scatter(
+#         dili_align_umap["UMAP_1"],
+#         dili_align_umap["UMAP_2"],
+#         c="red",
+#         marker="o",
+#         label="Source (DILI)",
+#         alpha=0.6
+#     )
+
+#     axes[1].set_title("After CORAL")
+#     axes[1].set_xlabel("UMAP 1")
+#     axes[1].set_ylabel("UMAP 2")
+#     axes[1].legend()
+
+#     fig.suptitle(title, fontsize=14, fontweight="bold")
+
+#     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+#     return fig
+
+# X_car_umap = pd.read_csv("X_car_umap.csv")
+# X_DILI_umap = pd.read_csv("X_DILI_umap.csv")
+# X_DILI_align_umap = pd.read_csv("X_DILI_align_umap.csv")
+
+
+# X_mito_umap = pd.read_csv("X_mito_umap.csv")
+# X_DILI_umap_mito = pd.read_csv("X_DILI_umap_mito.csv")
+# X_DILI_align_umap_mito = pd.read_csv("X_DILI_align_umap_mito.csv")
+
+
+# fig = plot_umap_coral(
+#     X_car_umap,
+#     X_DILI_umap,
+#     X_DILI_align_umap,
+#     title="CORrelation ALignment (CORAL) between CAR Antagonist & DILI Training Dataset"
+# )
+
+# st.pyplot(fig)
+
+
+# fig = plot_umap_coral(
+#     X_mito_umap,
+#     X_DILI_umap_mito,
+#     X_DILI_align_umap_mito,
+#     title="CORrelation ALignment (CORAL) between MITOTOX & DILI Training Dataset"
+# )
+
+# st.pyplot(fig)
 
 
 
