@@ -1077,7 +1077,7 @@ if one_or_few_SMILES != "['CCO']":
 
             "CAR_Probability": proba_car[:, 1],
 
-            "DILI_Probability": proba_dili[:, 1],
+            "MITOTOX_Probability": proba_mito[:, 1],
 
             "Ensemble_Probability": ensemble_proba[:, 1],
 
@@ -1484,7 +1484,7 @@ elif predict_button:
             results_df = pd.DataFrame({
                 "SMILES": df2["smiles"],
                 "CAR_Probability": proba_car[:, 1],
-                "DILI_Probability": proba_dili[:, 1],
+                "MITOTOX_Probability": proba_mito[:, 1],
                 "Ensemble_Probability": ensemble_proba[:, 1],
                 "Prediction": np.where(ensemble_prediction == 1, "DILI Positive", "DILI Negative"),
                 "MCP_Set": set_labels,
