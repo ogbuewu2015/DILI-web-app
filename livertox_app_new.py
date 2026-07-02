@@ -563,8 +563,8 @@ st.markdown(
             Hepatotoxicity, or drug-induced liver injury (DILI) , is a major reason for drug withdrawals and clinical trial failures. 
             Predicting intrinsic liver toxicity early is critical for ensuring patient safety and improving drug development success. 
             Our tool helps identify potential hepatotoxic risks of drug candidates using advanced machine learning.
-            See below the chemical space visualization of the DILI training compounds in a Constitutive Androstane Receptor antagonist
-            cytotoxicity signal domain.
+            See below the chemical space visualization of the DILI training compounds adapted to Constitutive Androstane Receptor antagonist
+            cytotoxicity and Mitochondrial toxicity (MITOTOX) signals domain.
         </p>
     </div>
     """,
@@ -1628,13 +1628,13 @@ else:
     st.markdown("""
     <div style="border: 2px solid #4A148C; border-radius: 15px; padding: 20px; text-align: center; background-color: #f4f1fa;">
         <h5 style="color: #2d0a61;">
-            This predictive framework consists of two models: an auxiliary branch (integrated CAR antagonist cytotoxicity signal)
-                and a primary branch (DILI). The ensemble models were built on DILIrank data (634 training and 97 in-domain calibration compounds,
-                all verified from literature). The CAR antagonist cytotoxicity signal model is independently aligned with the DILIrank dataset
-                using Correlation Alignment to support hepatotoxicity prediction.
+            This predictive framework consists of two models: An integrated CAR antagonist cytotoxicity signal branch
+                and an integrated MITOTOX signal branch (DILI). The ensemble models were built on DILIrank data (634 training and 97 in-domain calibration compounds,
+                all verified from literature). The CAR antagonist cytotoxicity and MITOTOX feature signals were independently aligned with the DILIrank dataset
+                using Correlation Alignment to boost hepatotoxicity prediction.
         </h5>
         <h5 style="color: white; background-color: #6A1B9A; border-radius: 10px; padding: 15px; margin-top: 20px; opacity: 0.9;">
-            DILIrank hepatotoxicity predictions are more reliable when Mondrian conformal prediction indicates confidence which is probabilistic and causal in chemical space.
+            Hepatotoxicity predictions are more reliable when Mondrian conformal prediction indicates confidence which is probabilistic and causal in chemical space,
                 however confidence is not certainty.
         </h5>
     </div>
