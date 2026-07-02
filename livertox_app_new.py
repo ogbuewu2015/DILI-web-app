@@ -149,12 +149,16 @@ calibrated_car_model = joblib.load(
     "calibrated_eec_catboost_model.pkl"
 )
 
-calibrated_dili_model = joblib.load(
-    "calibrated_dili_eec_xgb_model.pkl"
+calibrated_mito_model = joblib.load(
+    "calibrated_brf_model.pkl"
 )
 
-coral = joblib.load(
+coral_car = joblib.load(
     "coral_car_aligner.pkl"
+)
+
+coral_mito = joblib.load(
+    "coral_mito_aligner.pkl"
 )
 
 
@@ -175,15 +179,8 @@ weights = joblib.load(
 )
 
 w_car = weights["w_car"]
-w_dili = weights["w_dili"]
+w_mito = weights["w_mito"]
 
-calibrated_car_model = joblib.load(
-    "calibrated_eec_catboost_model.pkl"
-)
-
-calibrated_dili_model = joblib.load(
-    "calibrated_dili_eec_xgb_model.pkl"
-)
 
 
 
@@ -201,15 +198,7 @@ heavy_metals_atomic_nums = [
     64, 33, 50
 ]
 
-# === Preprocessing Functions ===
 
-# def remove_heavy_metals(df):
-#     def has_no_heavy_metals(smiles):
-#         mol = Chem.MolFromSmiles(smiles)
-#         if mol is None:
-#             return False
-#         return not any(atom.GetAtomicNum() in heavy_metals_atomic_nums for atom in mol.GetAtoms())
-#     return df[df['smiles'].apply(has_no_heavy_metals)]
 
 def remove_heavy_metals(df):
 
@@ -416,16 +405,16 @@ def preprocess_new_data_car(raw_input_df):
 
 # Load preprocessing objects
 @st.cache_resource
-def load_preprocessing_objects_dili():
-    selector = joblib.load("selector_dili.pkl")
-    scaler = joblib.load("scaler_dili.pkl")
-    float_cols = joblib.load("float_cols_dili.pkl")
-    retained_features_final = joblib.load("retained_features_final_dili.pkl")
+def load_preprocessing_objects_mito():
+    selector = joblib.load("selector_mito.pkl")
+    scaler = joblib.load("scaler_mito.pkl")
+    float_cols = joblib.load("float_cols_mito.pkl")
+    retained_features_final = joblib.load("retained_features_final_mito.pkl")
     return selector, scaler, float_cols, retained_features_final
 
 # Define preprocessing function for new data
-def preprocess_new_data_dili(raw_input_df):
-    selector, scaler, float_cols, retained_features_final = load_preprocessing_objects_dili()
+def preprocess_new_data_mito(raw_input_df):
+    selector, scaler, float_cols, retained_features_final = load_preprocessing_objects_mito()
 
     # Step 1: Apply variance threshold selection
     retained_columns = raw_input_df.columns[selector.get_support(indices=True)]
@@ -471,7 +460,13 @@ important_features_car = ['D001', 'D004', 'D005', 'D013', 'D014', 'D016', 'D018'
 def load_coral():
     return joblib.load("coral_car_aligner.pkl")
 
-coral = load_coral()
+coral_car = load_coral()
+
+@st.cache_resource
+def load_coral():
+    return joblib.load("coral_mito_aligner.pkl")
+
+coral_mito = load_coral()
 
 cytotoxic_car = ['AD013', 'AD034', 'AD053', 'AD123', 'AD308', 'AD330', 'AD360', 'AD366', 'AD367', 
                  'AD368', 'AD372', 'AD373', 'AD375', 'AD377', 'AD379', 'AD380', 'AD381', 'AD382', 
@@ -496,19 +491,29 @@ cytotoxic_car = ['AD013', 'AD034', 'AD053', 'AD123', 'AD308', 'AD330', 'AD360', 
                  'D716', 'D717', 'D718', 'D719', 'D721', 'D724', 'D729', 'D730', 'D731', 'D732', 'D733', 'D738', 'D739', 'D744', 'D745', 
                  'D746', 'D748', 'D749', 'D754', 'D756', 'D763', 'D765', 'D768', 'D774', 'D777']
 
-important_features_dili = ['D001', 'D004', 'D005', 'D013', 'D014', 'D016', 'D018', 'D019', 'D025', 'D026', 'D027', 'D034', 'D035', 'D123', 
-                           'D128', 'D130', 'D164', 'D173', 'D176', 'D186', 'D194', 'D195', 'D197', 'D199', 'D237', 'D259', 'D268', 'D274', 
-                           'D279', 'D282', 'D284', 'D287', 'D308', 'D322', 'D323', 'D324', 'D325', 'D326', 'D327', 'D328', 'D335', 'D336', 
-                           'D337', 'D338', 'D339', 'D340', 'D360', 'D366', 'D367', 'D368', 'D369', 'D370', 'D371', 'D372', 'D373', 'D374', 
-                           'D375', 'D376', 'D377', 'D378', 'D379', 'D380', 'D381', 'D383', 'D384', 'D385', 'D388', 'D389', 'D392', 'D393', 
-                           'D396', 'D411', 'D413', 'D421', 'D454', 'D461', 'D462', 'D469', 'D470', 'D477', 'D478', 'D481', 'D482', 'D483', 
-                           'D484', 'D485', 'D486', 'D494', 'D500', 'D501', 'D502', 'D503', 'D504', 'D505', 'D506', 'D507', 'D508', 'D509', 
-                           'D510', 'D532', 'D533', 'D534', 'D535', 'D536', 'D537', 'D538', 'D539', 'D546', 'D547', 'D559', 'D560', 'D561', 
-                           'D568', 'D569', 'D574', 'D575', 'D576', 'D579', 'D588', 'D589', 'D590', 'D591', 'D596', 'D597', 'D598', 'D599', 
-                           'D600', 'D601', 'D602', 'D604', 'D606', 'D607', 'D619', 'D621', 'D625', 'D627', 'D643', 'D647', 'D649', 'D650', 
-                           'D651', 'D674', 'D675', 'D676', 'D677', 'D678', 'D679', 'D680', 'D689', 'D708', 'D712', 'D714', 'D715', 'D716', 
-                           'D717', 'D718', 'D719', 'D721', 'D722', 'D724', 'D729', 'D730', 'D731', 'D732', 'D733', 'D738', 'D739', 'D742', 
-                           'D743', 'D744', 'D745', 'D746', 'D748', 'D749', 'D750', 'D753', 'D754', 'D756', 'D763', 'D765', 'D774', 'D777']
+important_features_mito = ['D001', 'D004', 'D005', 'D013', 'D014', 'D016', 'D018', 'D019', 'D025', 'D026', 'D027', 'D034',
+                           'D035', 'D053', 'D122', 'D123', 'D128', 'D130', 'D134', 'D154', 'D164', 'D173', 'D176', 'D186',
+                           'D187', 'D194', 'D195', 'D197', 'D199', 'D236', 'D252', 'D259', 'D265', 'D268', 'D274', 'D279',
+                           'D282', 'D308', 'D322', 'D323', 'D325', 'D326', 'D327', 'D328', 'D330', 'D335', 'D336', 'D337',
+                           'D338', 'D339', 'D340', 'D351', 'D360', 'D366', 'D367', 'D368', 'D369', 'D370', 'D371', 'D372',
+                           'D373', 'D374', 'D375', 'D376', 'D377', 'D378', 'D379', 'D380', 'D381', 'D382', 'D383', 'D384',
+                           'D385', 'D389', 'D390', 'D392', 'D393', 'D394', 'D395', 'D396', 'D397', 'D398', 'D399', 'D411',
+                           'D413', 'D422', 'D447', 'D449', 'D450', 'D451', 'D452', 'D453', 'D454', 'D459', 'D460', 'D461',
+                           'D462', 'D468', 'D469', 'D470', 'D471', 'D475', 'D476', 'D477', 'D478', 'D483', 'D484', 'D485',
+                           'D486', 'D492', 'D493', 'D494', 'D499', 'D500', 'D501', 'D502', 'D503', 'D504', 'D505', 'D506',
+                           'D507', 'D508', 'D509', 'D510', 'D532', 'D533', 'D534', 'D536', 'D537', 'D538', 'D539', 'D540', 
+                           'D541', 'D542', 'D544', 'D545', 'D546', 'D547', 'D550', 'D551', 'D552', 'D553', 'D556', 'D560',
+                           'D561', 'D562', 'D570', 'D571', 'D575', 'D576', 'D582', 'D588', 'D589', 'D590', 'D591', 'D596',
+                           'D597', 'D598', 'D599', 'D600', 'D601', 'D602', 'D603', 'D604', 'D606', 'D607', 'D621', 'D643',
+                           'D648', 'D649', 'D650', 'D651', 'D652', 'D668', 'D674', 'D675', 'D677', 'D679', 'D680', 'D689',
+                           'D708', 'D709', 'D710', 'D712', 'D713', 'D715', 'D716', 'D717', 'D718', 'D719', 'D721', 'D724',
+                           'D725', 'D729', 'D730', 'D731', 'D732', 'D733', 'D738', 'D739', 'D742', 'D744', 'D745', 'D746',
+                           'D748', 'D749', 'D750', 'D752', 'D754', 'D756', 'D765', 'D768', 'D774', 'D775', 'D777']
+
+
+cytotoxic_mito = ['AD013', 'AD027', 'AD035', 'AD053', 'AD123', 'AD130', 'AD186', 'AD199', 'AD265', 'AD274', 'AD308', 'AD323', 'AD330', 'AD335', 'AD360', 'AD367', 'AD368', 'AD369', 'AD372', 'AD373', 'AD377', 'AD379', 'AD380', 'AD381', 'AD382', 'AD383', 'AD389', 'AD390', 'AD392', 'AD393', 'AD395', 'AD396', 'AD397', 'AD422', 'AD447', 'AD475', 'AD476', 'AD492', 'AD499', 'AD500', 'AD534', 'AD536', 'AD537', 'AD538', 'AD539', 'AD540', 'AD541', 'AD542', 'AD544', 'AD545', 'AD556', 'AD570', 'AD571', 'AD575', 'AD599', 'AD607', 'AD648', 'AD668', 'AD689', 'AD709', 'AD710', 'AD712', 'AD713', 'AD715', 'AD717', 'AD724', 'AD725', 'AD739', 'AD744', 'AD774', 'AD775', 'D005', 'D013', 'D014', 'D016', 'D018', 'D019', 'D025', 'D026', 'D123', 'D128', 'D130', 'D134', 'D164', 'D173', 'D176', 'D186', 'D187', 'D194', 'D195', 'D197', 'D199', 'D259', 'D265', 'D268', 'D274', 'D279', 'D282', 'D308', 'D323', 'D337', 'D338', 'D339', 'D351', 'D360', 'D366', 'D367', 'D368', 'D371', 'D374', 'D375', 'D378', 'D447', 'D449', 'D450', 'D451', 'D452', 'D453', 'D454', 'D459', 'D460', 'D461', 'D462', 'D468', 'D469', 'D470', 'D471', 'D475', 'D476', 'D477', 'D478', 'D483', 'D484', 'D485', 'D486', 'D492', 'D493', 'D494', 'D499', 'D500', 'D501', 'D502', 'D503', 'D504', 'D505', 'D506', 'D507', 'D508', 'D509', 'D510', 'D532', 'D533', 'D534', 'D536', 'D537', 'D538', 'D539', 'D544', 'D545', 'D546', 'D547', 'D550', 'D551', 'D552', 'D556', 'D560', 'D561', 'D562', 'D570', 'D575', 'D576', 'D582', 'D588', 'D589', 'D590', 'D591', 'D596', 'D597', 'D598', 'D600', 'D601', 'D603', 'D604', 'D607', 'D649', 'D650', 'D651', 'D674', 'D679', 'D712', 'D713', 'D715', 'D716', 'D717', 'D718', 'D719', 'D721', 'D729', 'D730', 'D732', 'D738', 'D739', 'D744', 'D746', 'D748', 'D754', 'D756', 'D774', 'D777']
+
+
 
 
 
@@ -635,6 +640,11 @@ X_DILI_umap = pd.read_csv("X_DILI_umap.csv")
 X_DILI_align_umap = pd.read_csv("X_DILI_align_umap.csv")
 
 
+X_mito_umap = pd.read_csv("X_mito_umap.csv")
+X_DILI_umap_mito = pd.read_csv("X_DILI_umap_mito.csv")
+X_DILI_align_umap_mito = pd.read_csv("X_DILI_align_umap_mito.csv")
+
+
 fig = plot_umap_coral(
     X_car_umap,
     X_DILI_umap,
@@ -645,7 +655,14 @@ fig = plot_umap_coral(
 st.pyplot(fig)
 
 
+fig = plot_umap_coral(
+    X_mito_umap,
+    X_DILI_umap_mito,
+    X_DILI_align_umap_mito,
+    title="CORrelation ALignment (CORAL) between MITOTOX & DILI Training Dataset"
+)
 
+st.pyplot(fig)
 
 
 
@@ -696,13 +713,7 @@ if one_or_few_SMILES != "['CCO']":
             st.success("✅ Heavy metal filtering completed.")
 
         
-        # df = remove_heavy_metals(df)
 
-        # if df.empty:
-        #     st.error("❌ All input SMILES contain heavy metals.")
-        #     st.stop()
-
-        # st.success("✅ Heavy metals filtered.")
 
         # ====================================================
         # STEP 2: DISCONNECT METALS
@@ -827,7 +838,7 @@ if one_or_few_SMILES != "['CCO']":
 
         processed_car_df = preprocess_new_data_car(descriptors_df)
 
-        processed_dili_df = preprocess_new_data_dili(descriptors_df)
+        processed_mito_df = preprocess_new_data_mito(descriptors_df)
 
         st.success("✅ Preprocessing complete.")
 
@@ -837,7 +848,7 @@ if one_or_few_SMILES != "['CCO']":
 
         selected_car_df = processed_car_df[[col for col in important_features_car if col in processed_car_df.columns]]
 
-        selected_dili_df = processed_dili_df[[col for col in important_features_dili if col in processed_dili_df.columns]]
+        selected_mito_df = processed_mito_df[[col for col in important_features_mito if col in processed_mito_df.columns]]
 
         st.success("✅ Important features selected.")
         
@@ -847,7 +858,7 @@ if one_or_few_SMILES != "['CCO']":
         # STEP 13: CORAL ALIGNMENT
         # ====================================================
 
-        selected_car_df_align = coral.transform(selected_car_df)
+        selected_car_df_align = coral_car.transform(selected_car_df)
 
         selected_car_df_align = pd.DataFrame(
             selected_car_df_align,
@@ -862,7 +873,7 @@ if one_or_few_SMILES != "['CCO']":
             axis=1
         )
 
-        st.success("✅ CORAL alignment complete.")
+        st.success("✅ CAR Antagonist CORAL alignment complete.")
 
         # ====================================================
         # STEP 14: CAR CYTOTOXIC FEATURES
@@ -881,7 +892,48 @@ if one_or_few_SMILES != "['CCO']":
         st.success("✅ CAR antagonist cytotoxic features selected.")
 
         
+         # ====================================================
+        # STEP 13: CORAL ALIGNMENT
+        # ====================================================
 
+        selected_mito_df_align = coral_mito.transform(selected_mito_df)
+
+        selected_mito_df_align = pd.DataFrame(
+            selected_mito_df_align,
+            columns=important_features_mito,
+            index=selected_mito_df.index
+        )
+
+        selected_mito_df_align.columns = ["A" + col for col in selected_mito_df_align.columns]
+
+        selected_mito_df_full = pd.concat(
+            [selected_mito_df, selected_mito_df_align],
+            axis=1
+        )
+
+        st.success("✅ MITOTOX CORAL alignment complete.")
+
+        # ====================================================
+        # STEP 14: CAR CYTOTOXIC FEATURES
+        # ====================================================
+
+        missing_features = [col for col in cytotoxic_mito if col not in selected_mito_df_full.columns]
+
+        if missing_features:
+
+            st.error(f"❌ Missing required CAR features: {missing_features}")
+
+            st.stop()
+
+        selected_mito_df_final = selected_mito_df_full[cytotoxic_mito]
+
+        st.success("✅ MITOTOX features selected.")
+
+        
+
+        # ====================================================
+        # STEP 15: MODEL PROBABILITIES
+        # ====================================================
         # ====================================================
         # STEP 15: MODEL PROBABILITIES
         # ====================================================
@@ -890,9 +942,9 @@ if one_or_few_SMILES != "['CCO']":
         
         proba_car = calibrated_car_model.predict_proba(selected_car_df_final)
 
-        proba_dili = calibrated_dili_model.predict_proba(selected_dili_df)
+        proba_mito = calibrated_mito_model.predict_proba(selected_mito_df_final)
 
-        st.success("✅ CAR and DILI probabilities generated.")
+        st.success("✅ CAR and MITOTOX probabilities generated.")
 
         # ====================================================
         # STEP 16: WEIGHTED SOFT VOTING
@@ -900,7 +952,7 @@ if one_or_few_SMILES != "['CCO']":
 
         ensemble_proba = (
             w_car * proba_car +
-            w_dili * proba_dili
+            w_mito * proba_mito
         )
 
         ensemble_prediction = np.argmax(
@@ -1238,13 +1290,17 @@ elif predict_button:
             descriptors_df = generate_mold2_descriptors(df2["smiles"])
             convert_columns_to_int64(descriptors_df)
             st.success("✅ Mold2 descriptors generated.")
+            
+            
+            
+            
 
             # ====================================================
             # STEP 11: PREPROCESS MODELS
             # ====================================================
 
             processed_car_df = preprocess_new_data_car(descriptors_df)
-            processed_dili_df = preprocess_new_data_dili(descriptors_df)
+            processed_mito_df = preprocess_new_data_mito(descriptors_df)
             st.success("✅ CAR + DILI preprocessing complete.")
 
             # ====================================================
@@ -1252,51 +1308,114 @@ elif predict_button:
             # ====================================================
 
             selected_car_df = processed_car_df[[c for c in important_features_car if c in processed_car_df.columns]]
-            selected_dili_df = processed_dili_df[[c for c in important_features_dili if c in processed_dili_df.columns]]
+            selected_mito_df = processed_mito_df[[c for c in important_features_mito if c in processed_mito_df.columns]]
             st.success("✅ Feature selection complete.")
 
             # ====================================================
             # STEP 13: CORAL ALIGNMENT
             # ====================================================
-
-            selected_car_df_align = coral.transform(selected_car_df)
-
-            selected_car_df_align = pd.DataFrame(
-                selected_car_df_align,
-                columns=important_features_car,
-                index=selected_car_df.index
-            )
-
-            selected_car_df_align.columns = ["A" + c for c in selected_car_df_align.columns]
-
-            selected_car_df_full = pd.concat([selected_car_df, selected_car_df_align], axis=1)
-            st.success("✅ CORAL alignment complete.")
-
             # ====================================================
-            # STEP 14: CYTOTOXIC FEATURES
-            # ====================================================
+        # STEP 13: CORAL ALIGNMENT
+        # ====================================================
 
-            missing_features = [c for c in cytotoxic_car if c not in selected_car_df_full.columns]
+            selected_car_df_align = coral_car.transform(selected_car_df)
+
+            selected_car_df_align = pd.DataFrame(selected_car_df_align,
+            columns=important_features_car,
+            index=selected_car_df.index)
+
+            selected_car_df_align.columns = ["A" + col for col in selected_car_df_align.columns]
+
+            selected_car_df_full = pd.concat(
+            [selected_car_df, selected_car_df_align],
+            axis=1)
+
+            st.success("✅ CAR Antagonist CORAL alignment complete.")
+
+        # ====================================================
+        # STEP 14: CAR CYTOTOXIC FEATURES
+        # ====================================================
+
+            missing_features = [col for col in cytotoxic_car if col not in selected_car_df_full.columns]
+
             if missing_features:
-                st.error(f"❌ Missing CAR features: {missing_features}")
+
+                st.error(f"❌ Missing required CAR features: {missing_features}")
+
                 st.stop()
 
             selected_car_df_final = selected_car_df_full[cytotoxic_car]
-            st.success("✅ CAR cytotoxic features selected.")
+
+            st.success("✅ CAR antagonist cytotoxic features selected.")
+
+        
+         # ====================================================
+        # STEP 13: CORAL ALIGNMENT
+        # ====================================================
+
+            selected_mito_df_align = coral_mito.transform(selected_mito_df)
+
+            selected_mito_df_align = pd.DataFrame(
+            selected_mito_df_align,
+            columns=important_features_mito,
+            index=selected_mito_df.index)
+
+            selected_mito_df_align.columns = ["A" + col for col in selected_mito_df_align.columns]
+
+            selected_mito_df_full = pd.concat(
+            [selected_mito_df, selected_mito_df_align],
+            axis=1)
+
+            st.success("✅ MITOTOX CORAL alignment complete.")
+
+        # ====================================================
+        # STEP 14: CAR CYTOTOXIC FEATURES
+        # ====================================================
+
+            missing_features = [col for col in cytotoxic_mito if col not in selected_mito_df_full.columns]
+
+            if missing_features:
+
+                st.error(f"❌ Missing required CAR features: {missing_features}")
+
+                st.stop()
+
+            selected_mito_df_final = selected_mito_df_full[cytotoxic_mito]
+
+            st.success("✅ MITOTOX features selected.")
+
+        
+
+        # ====================================================
+        # STEP 15: MODEL PROBABILITIES
+        # ====================================================
+        # ====================================================
+        # STEP 15: MODEL PROBABILITIES
+        # ====================================================
+        
+
+        
+            proba_car = calibrated_car_model.predict_proba(selected_car_df_final)
+
+            proba_mito = calibrated_mito_model.predict_proba(selected_mito_df_final)
+
+            st.success("✅ CAR and MITOTOX probabilities generated.")
+            
+            
 
             # ====================================================
             # STEP 15: MODEL PREDICTIONS
             # ====================================================
 
             proba_car = calibrated_car_model.predict_proba(selected_car_df_final)
-            proba_dili = calibrated_dili_model.predict_proba(selected_dili_df)
+            proba_mito = calibrated_mito_model.predict_proba(selected_mito_df)
             st.success("✅ Predictions generated.")
 
             # ====================================================
             # STEP 16: WEIGHTED SOFT VOTING
             # ====================================================
 
-            ensemble_proba = w_car * proba_car + w_dili * proba_dili
+            ensemble_proba = w_car * proba_car + w_mito * proba_mito
             ensemble_prediction = np.argmax(ensemble_proba, axis=1)
             st.success("✅ Ensemble prediction complete.")
 
