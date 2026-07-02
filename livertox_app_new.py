@@ -181,7 +181,13 @@ weights = joblib.load(
 w_car = weights["w_car"]
 w_mito = weights["w_mito"]
 
+X_car_umap = pd.read_csv("X_car_umap.csv")
+X_DILI_umap = pd.read_csv("X_DILI_umap.csv")
+X_DILI_align_umap = pd.read_csv("X_DILI_align_umap.csv")
 
+X_mito_umap = pd.read_csv("X_mito_umap.csv")
+X_DILI_umap_mito = pd.read_csv("X_DILI_umap_mito.csv")
+X_DILI_align_umap_mito = pd.read_csv("X_DILI_align_umap_mito.csv")
 
 
 
